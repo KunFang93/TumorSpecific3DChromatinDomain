@@ -344,126 +344,126 @@ for sample in samples:
         nt_pt_rt_pcori_df[['chr','start','end','{}_100000'.format(sample)]].to_csv(file, header=False, index=False, sep='\t',mode='a')
 
 
-# def find_switch(compartment_df1,compartment_df2,col1,col2):
-#     comp_bt1 = pybt.BedTool.from_dataframe(compartment_df1[['chr', 'start', 'end', 'compartment']])
-#     comp_bt2 = pybt.BedTool.from_dataframe(compartment_df2[['chr', 'start', 'end', 'compartment']])
-#     inter_df = pybt.BedTool.intersect(comp_bt1, comp_bt2, wa=True, wb=True).to_dataframe(disable_auto_names=True,
-#                                                                                          names=['chr1',
-#                                                                                                 'start1',
-#                                                                                                 'end1',
-#                                                                                                 '{}_comp'.format(col1),
-#                                                                                                 'chr2',
-#                                                                                                 'start2',
-#                                                                                                 'end2',
-#                                                                                                 '{}_comp'.format(col2)])
-#     # remove short overlap fragment, this step might lose some small compartment in comp_bt2
-#     inter_df['interSizeRatio'] = inter_df.apply(lambda x:
-#                                                 (min(x['end1'], x['end2']) - max(x['start1'], x['start2'])) /
-#                                                 (x['end1'] - x['start1']),
-#                                                 axis=1)
-#     inter_df['SwitchType'] = inter_df['{}_comp'.format(col1)] + '-' + inter_df['{}_comp'.format(col2)]
-#     return inter_df
-#
-# # profiling differential information. As we need to compare, we use pcQnm
-# compartment_NT_pcqnm = bin2compartment_avg(nt_tt_pcqnm_df[['chr','start','end','NT','padj','sample_maha']],'NT')
-# compartment_TT_pcqnm = bin2compartment_avg(nt_tt_pcqnm_df[['chr','start','end','TT','padj','sample_maha']],'TT')
-# compartment_PT_pcqnm = bin2compartment_avg(pt_rt_pcqnm_df[['chr','start','end','PT','padj','sample_maha']],'PT')
-# compartment_RT_pcqnm = bin2compartment_avg(pt_rt_pcqnm_df[['chr','start','end','RT','padj','sample_maha']],'RT')
-# # save
-# writer2 = pd.ExcelWriter('{}/compartments_combined.xlsx'.format(datdir), engine='xlsxwriter')
-# compartment_NT_pcqnm.to_excel(writer2, sheet_name='NT', index=False)
-# compartment_TT_pcqnm.to_excel(writer2, sheet_name='TT', index=False)
-# compartment_PT_pcqnm.to_excel(writer2, sheet_name='PT', index=False)
-# compartment_RT_pcqnm.to_excel(writer2, sheet_name='RT', index=False)
-# writer2.save()
-#
-# compartment_NT_pcqnm['key'] = compartment_NT_pcqnm['chr'] + '_' + compartment_NT_pcqnm['start'].astype(str) + '_' \
-#                               + compartment_NT_pcqnm['end'].astype(str)
-# compartment_TT_pcqnm['key'] = compartment_TT_pcqnm['chr'] + '_' + compartment_TT_pcqnm['start'].astype(str) + '_' \
-#                               + compartment_TT_pcqnm['end'].astype(str)
-# compartment_PT_pcqnm['key'] = compartment_PT_pcqnm['chr'] + '_' + compartment_PT_pcqnm['start'].astype(str) + '_' \
-#                               + compartment_PT_pcqnm['end'].astype(str)
-# compartment_RT_pcqnm['key'] = compartment_RT_pcqnm['chr'] + '_' + compartment_RT_pcqnm['start'].astype(str) + '_' \
-#                               + compartment_RT_pcqnm['end'].astype(str)
-# NT_pcqnm_dict = dict(zip(compartment_NT_pcqnm['key'], compartment_NT_pcqnm['pcQnm.avg']))
-# TT_pcqnm_dict = dict(zip(compartment_TT_pcqnm['key'], compartment_TT_pcqnm['pcQnm.avg']))
-# PT_pcqnm_dict = dict(zip(compartment_PT_pcqnm['key'], compartment_PT_pcqnm['pcQnm.avg']))
-# RT_pcqnm_dict = dict(zip(compartment_RT_pcqnm['key'], compartment_RT_pcqnm['pcQnm.avg']))
-# # find switch
-# NT_TT_switch = find_switch(compartment_NT_pcqnm,compartment_TT_pcqnm,'NT','TT')
-# PT_RT_switch = find_switch(compartment_PT_pcqnm,compartment_RT_pcqnm,'PT','RT')
-#
-# # assign compartment score back
-# NT_TT_switch['key.NT'] = NT_TT_switch['chr1'] + '_' + NT_TT_switch['start1'].astype(str) + '_' + NT_TT_switch['end1'].astype(str)
-# NT_TT_switch['NT.pcQnm'] = NT_TT_switch['key.NT'].map(NT_pcqnm_dict)
-# NT_TT_switch['key.TT'] = NT_TT_switch['chr2'] + '_' + NT_TT_switch['start2'].astype(str) + '_' + NT_TT_switch['end2'].astype(str)
-# NT_TT_switch['TT.pcQnm'] = NT_TT_switch['key.TT'].map(TT_pcqnm_dict)
-# PT_RT_switch['key.PT'] = PT_RT_switch['chr1'] + '_' + PT_RT_switch['start1'].astype(str) + '_' + PT_RT_switch['end1'].astype(str)
-# PT_RT_switch['PT.pcQnm'] = PT_RT_switch['key.PT'].map(PT_pcqnm_dict)
-# PT_RT_switch['key.RT'] = PT_RT_switch['chr2'] + '_' + PT_RT_switch['start2'].astype(str) + '_' + PT_RT_switch['end2'].astype(str)
-# PT_RT_switch['RT.pcQnm'] = PT_RT_switch['key.RT'].map(RT_pcqnm_dict)
-# NT_TT_switch.drop(['key.NT','key.TT'],inplace=True,axis=1)
-# PT_RT_switch.drop(['key.PT','key.RT'],inplace=True,axis=1)
-# # remove key
-# writer3 = pd.ExcelWriter('{}/compartments_switch.xlsx'.format(datdir), engine='xlsxwriter')
-# NT_TT_switch.to_excel(writer3, sheet_name='NT2TT', index=False)
-# PT_RT_switch.to_excel(writer3, sheet_name='PT2RT', index=False)
-# writer3.save()
-#
-# # In terms of the number of the switch
-# def build_sankey(switch_df,groups):
-#     comp1_count = switch_df[['chr1','start1','end1','{}_comp'.format(groups[0])]].drop_duplicates()['{}_comp'.format(groups[0])].value_counts()
-#     comp2_count = switch_df[['chr1','start1','end1','{}_comp'.format(groups[0])]].drop_duplicates()['{}_comp'.format(groups[0])].value_counts()
-#     # initiate sankey dict
-#     # darkorange:A; darkviolet:B
-#     sankey_dict = {
-#         'source': [0, 0, 1, 1],
-#         'target': [2, 3, 2, 3],
-#         'value': [comp1_count['A'], comp1_count['B'], comp2_count['A'], comp2_count['B']],
-#         'label': ['{}_A'.format(groups[0]), '{}_B'.format(groups[0]), '{}_A'.format(groups[1]), '{}_B'.format(groups[1])],
-#         'color_link': ['darkorange', 'darkviolet', 'darkorange', 'darkviolet'],
-#         'color_node': ['darkorange', 'darkviolet', 'darkorange', 'darkviolet']
-#     }
-#
-#     a2b_count = len(switch_df[switch_df['SwitchType'] == 'A-B'])
-#     b2a_count = len(switch_df[switch_df['SwitchType'] == 'B-A'])
-#     sankey_dict['value'][0] = sankey_dict['value'][0] - a2b_count
-#     sankey_dict['value'][1] = a2b_count
-#     sankey_dict['value'][2] = b2a_count
-#     sankey_dict['value'][3] = sankey_dict['value'][1] - b2a_count
-#     return sankey_dict
-#
-# def plot_sankeyplot(sankey_dict,outname):
-#     layout = go.Layout(
-#         autosize=False,
-#         width=500,
-#         height=500
-#     )
-#     fig = go.Figure(data=[go.Sankey(
-#         node=dict(
-#             pad=15,
-#             thickness=20,
-#             line=dict(color="black", width=0.5),
-#             label=['<b>' + label + '</b>' for label in sankey_dict['label']],
-#             color=sankey_dict['color_node']
-#         ),
-#         link=dict(
-#             source=sankey_dict['source'],  # indices correspond to labels, eg A1, A2, A1, B1, ...
-#             target=sankey_dict['target'],
-#             value=sankey_dict['value'],
-#             color=sankey_dict['color_link']
-#         ),
-#         textfont=dict(size=16)
-#     )], layout=layout)
-#     fig.update_layout(title_text="{}-{} CompartmentA/B Transition".format(sankey_dict['label'][0].split('_')[0],
-#                                                                           sankey_dict['label'][2].split('_')[0]),
-#                       font_size=10)
-#     fig.write_image(outname)
-#
-# nt_tt_sankey_dict = build_sankey(NT_TT_switch,['NT','TT'])
-# pt_rt_sankey_dict = build_sankey(PT_RT_switch,['PT','RT'])
-#
-# # Fig. 1D
-# plot_sankeyplot(nt_tt_sankey_dict,'{}/NT_TT_CompTrans_080623.png'.format(datdir))
-# plot_sankeyplot(pt_rt_sankey_dict,'{}/PT_RT_CompTrans_080623.png'.format(datdir))
+def find_switch(compartment_df1,compartment_df2,col1,col2):
+    comp_bt1 = pybt.BedTool.from_dataframe(compartment_df1[['chr', 'start', 'end', 'compartment']])
+    comp_bt2 = pybt.BedTool.from_dataframe(compartment_df2[['chr', 'start', 'end', 'compartment']])
+    inter_df = pybt.BedTool.intersect(comp_bt1, comp_bt2, wa=True, wb=True).to_dataframe(disable_auto_names=True,
+                                                                                         names=['chr1',
+                                                                                                'start1',
+                                                                                                'end1',
+                                                                                                '{}_comp'.format(col1),
+                                                                                                'chr2',
+                                                                                                'start2',
+                                                                                                'end2',
+                                                                                                '{}_comp'.format(col2)])
+    # remove short overlap fragment, this step might lose some small compartment in comp_bt2
+    inter_df['interSizeRatio'] = inter_df.apply(lambda x:
+                                                (min(x['end1'], x['end2']) - max(x['start1'], x['start2'])) /
+                                                (x['end1'] - x['start1']),
+                                                axis=1)
+    inter_df['SwitchType'] = inter_df['{}_comp'.format(col1)] + '-' + inter_df['{}_comp'.format(col2)]
+    return inter_df
+
+# profiling differential information. As we need to compare, we use pcQnm
+compartment_NT_pcqnm = bin2compartment_avg(nt_tt_pcqnm_df[['chr','start','end','NT','padj','sample_maha']],'NT')
+compartment_TT_pcqnm = bin2compartment_avg(nt_tt_pcqnm_df[['chr','start','end','TT','padj','sample_maha']],'TT')
+compartment_PT_pcqnm = bin2compartment_avg(pt_rt_pcqnm_df[['chr','start','end','PT','padj','sample_maha']],'PT')
+compartment_RT_pcqnm = bin2compartment_avg(pt_rt_pcqnm_df[['chr','start','end','RT','padj','sample_maha']],'RT')
+# save
+writer2 = pd.ExcelWriter('{}/compartments_combined.xlsx'.format(datdir), engine='xlsxwriter')
+compartment_NT_pcqnm.to_excel(writer2, sheet_name='NT', index=False)
+compartment_TT_pcqnm.to_excel(writer2, sheet_name='TT', index=False)
+compartment_PT_pcqnm.to_excel(writer2, sheet_name='PT', index=False)
+compartment_RT_pcqnm.to_excel(writer2, sheet_name='RT', index=False)
+writer2.save()
+
+compartment_NT_pcqnm['key'] = compartment_NT_pcqnm['chr'] + '_' + compartment_NT_pcqnm['start'].astype(str) + '_' \
+                              + compartment_NT_pcqnm['end'].astype(str)
+compartment_TT_pcqnm['key'] = compartment_TT_pcqnm['chr'] + '_' + compartment_TT_pcqnm['start'].astype(str) + '_' \
+                              + compartment_TT_pcqnm['end'].astype(str)
+compartment_PT_pcqnm['key'] = compartment_PT_pcqnm['chr'] + '_' + compartment_PT_pcqnm['start'].astype(str) + '_' \
+                              + compartment_PT_pcqnm['end'].astype(str)
+compartment_RT_pcqnm['key'] = compartment_RT_pcqnm['chr'] + '_' + compartment_RT_pcqnm['start'].astype(str) + '_' \
+                              + compartment_RT_pcqnm['end'].astype(str)
+NT_pcqnm_dict = dict(zip(compartment_NT_pcqnm['key'], compartment_NT_pcqnm['pcQnm.avg']))
+TT_pcqnm_dict = dict(zip(compartment_TT_pcqnm['key'], compartment_TT_pcqnm['pcQnm.avg']))
+PT_pcqnm_dict = dict(zip(compartment_PT_pcqnm['key'], compartment_PT_pcqnm['pcQnm.avg']))
+RT_pcqnm_dict = dict(zip(compartment_RT_pcqnm['key'], compartment_RT_pcqnm['pcQnm.avg']))
+# find switch
+NT_TT_switch = find_switch(compartment_NT_pcqnm,compartment_TT_pcqnm,'NT','TT')
+PT_RT_switch = find_switch(compartment_PT_pcqnm,compartment_RT_pcqnm,'PT','RT')
+
+# assign compartment score back
+NT_TT_switch['key.NT'] = NT_TT_switch['chr1'] + '_' + NT_TT_switch['start1'].astype(str) + '_' + NT_TT_switch['end1'].astype(str)
+NT_TT_switch['NT.pcQnm'] = NT_TT_switch['key.NT'].map(NT_pcqnm_dict)
+NT_TT_switch['key.TT'] = NT_TT_switch['chr2'] + '_' + NT_TT_switch['start2'].astype(str) + '_' + NT_TT_switch['end2'].astype(str)
+NT_TT_switch['TT.pcQnm'] = NT_TT_switch['key.TT'].map(TT_pcqnm_dict)
+PT_RT_switch['key.PT'] = PT_RT_switch['chr1'] + '_' + PT_RT_switch['start1'].astype(str) + '_' + PT_RT_switch['end1'].astype(str)
+PT_RT_switch['PT.pcQnm'] = PT_RT_switch['key.PT'].map(PT_pcqnm_dict)
+PT_RT_switch['key.RT'] = PT_RT_switch['chr2'] + '_' + PT_RT_switch['start2'].astype(str) + '_' + PT_RT_switch['end2'].astype(str)
+PT_RT_switch['RT.pcQnm'] = PT_RT_switch['key.RT'].map(RT_pcqnm_dict)
+NT_TT_switch.drop(['key.NT','key.TT'],inplace=True,axis=1)
+PT_RT_switch.drop(['key.PT','key.RT'],inplace=True,axis=1)
+# remove key
+writer3 = pd.ExcelWriter('{}/compartments_switch.xlsx'.format(datdir), engine='xlsxwriter')
+NT_TT_switch.to_excel(writer3, sheet_name='NT2TT', index=False)
+PT_RT_switch.to_excel(writer3, sheet_name='PT2RT', index=False)
+writer3.save()
+
+# In terms of the number of the switch
+def build_sankey(switch_df,groups):
+    comp1_count = switch_df[['chr1','start1','end1','{}_comp'.format(groups[0])]].drop_duplicates()['{}_comp'.format(groups[0])].value_counts()
+    comp2_count = switch_df[['chr1','start1','end1','{}_comp'.format(groups[0])]].drop_duplicates()['{}_comp'.format(groups[0])].value_counts()
+    # initiate sankey dict
+    # darkorange:A; darkviolet:B
+    sankey_dict = {
+        'source': [0, 0, 1, 1],
+        'target': [2, 3, 2, 3],
+        'value': [comp1_count['A'], comp1_count['B'], comp2_count['A'], comp2_count['B']],
+        'label': ['{}_A'.format(groups[0]), '{}_B'.format(groups[0]), '{}_A'.format(groups[1]), '{}_B'.format(groups[1])],
+        'color_link': ['darkorange', 'darkviolet', 'darkorange', 'darkviolet'],
+        'color_node': ['darkorange', 'darkviolet', 'darkorange', 'darkviolet']
+    }
+
+    a2b_count = len(switch_df[switch_df['SwitchType'] == 'A-B'])
+    b2a_count = len(switch_df[switch_df['SwitchType'] == 'B-A'])
+    sankey_dict['value'][0] = sankey_dict['value'][0] - a2b_count
+    sankey_dict['value'][1] = a2b_count
+    sankey_dict['value'][2] = b2a_count
+    sankey_dict['value'][3] = sankey_dict['value'][1] - b2a_count
+    return sankey_dict
+
+def plot_sankeyplot(sankey_dict,outname):
+    layout = go.Layout(
+        autosize=False,
+        width=500,
+        height=500
+    )
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            pad=15,
+            thickness=20,
+            line=dict(color="black", width=0.5),
+            label=['<b>' + label + '</b>' for label in sankey_dict['label']],
+            color=sankey_dict['color_node']
+        ),
+        link=dict(
+            source=sankey_dict['source'],  # indices correspond to labels, eg A1, A2, A1, B1, ...
+            target=sankey_dict['target'],
+            value=sankey_dict['value'],
+            color=sankey_dict['color_link']
+        ),
+        textfont=dict(size=16)
+    )], layout=layout)
+    fig.update_layout(title_text="{}-{} CompartmentA/B Transition".format(sankey_dict['label'][0].split('_')[0],
+                                                                          sankey_dict['label'][2].split('_')[0]),
+                      font_size=10)
+    fig.write_image(outname)
+
+nt_tt_sankey_dict = build_sankey(NT_TT_switch,['NT','TT'])
+pt_rt_sankey_dict = build_sankey(PT_RT_switch,['PT','RT'])
+
+# Fig. 1D
+plot_sankeyplot(nt_tt_sankey_dict,'{}/NT_TT_CompTrans_080623.png'.format(datdir))
+plot_sankeyplot(pt_rt_sankey_dict,'{}/PT_RT_CompTrans_080623.png'.format(datdir))
 
