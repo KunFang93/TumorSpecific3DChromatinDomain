@@ -10,7 +10,7 @@ Patient's Compartment, TADs and Loops (reference genome hg19)
 
 *Loops*: resource folder (Links in readme)
 
-# GISTA
+# GISTA (Group, Individual-specific TADs Analyzer)
 GISTA has its own github page https://github.com/KunFang93/GISTA
 
 # Single cell dataset
