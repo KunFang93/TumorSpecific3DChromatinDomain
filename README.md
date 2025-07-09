@@ -3,11 +3,12 @@ Codes for 'Hi-C profiling in tissues reveals 3D chromatin-regulated breast tumor
 
 # Resources
 Patient's Compartment, TADs and Loops (reference genome hg19)
-Compartments: resource folder  
 
-TADs: https://github.com/KunFang93/GISTA/tree/main/data   
+*Compartments*: resource folder  
 
-Loops: resource folder  
+*TADs*: https://github.com/KunFang93/GISTA/tree/main/data   
+
+*Loops*: resource folder  
 
 # GISTA
 GISTA has its own github page https://github.com/KunFang93/GISTA
