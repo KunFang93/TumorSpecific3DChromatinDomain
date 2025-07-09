@@ -1,9 +1,11 @@
 # TumorSpecific3DChromatinDomain
 Codes for 'Hi-C profiling in tissues reveals 3D chromatin-regulated breast tumor heterogeneity informing a looping-mediated therapeutic avenue'
 
-# Resources: patient's TADs and Loops (reference genome hg19)
-TADs: https://github.com/KunFang93/GISTA/tree/main/data
-Loops:
+# Resources
+Patient's Compartment, TADs and Loops (reference genome hg19)
+Compartments: resource folder  
+TADs: https://github.com/KunFang93/GISTA/tree/main/data   
+Loops: resource folder  
 
 # GISTA
 GISTA has its own github page https://github.com/KunFang93/GISTA
