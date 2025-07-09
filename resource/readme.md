@@ -1,5 +1,5 @@
-##Identified Compartment, TADs and Loops for potential interesting
-###Loops:
+## Identified Compartment, TADs and Loops for potential interesting  
+### Loops:  
 [NT1](https://www.dropbox.com/scl/fi/r9mbrh1idyyvvdyrrlt2d/NT1_loops_q0.98_filt.txt?rlkey=mlnxiqf2ihac2sdobadzualik&st=xuvax0dj&dl=0)  
 [NT2](https://www.dropbox.com/scl/fi/f3vyua8nsdbpy2w638n8j/NT2_loops_q0.98_filt.txt?rlkey=c6rudonzfqsoy7mj8sl0hncot&st=ezidx4sn&dl=0)  
 [PT1](https://www.dropbox.com/scl/fi/6vnb311kntw2t1zqnp71g/PT1_loops_q0.98_filt.txt?rlkey=okmo4vnelsdwl02xvndtrnkbs&st=vz29rdzy&dl=0)  
