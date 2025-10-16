@@ -1,4 +1,5 @@
-## Identified Compartment, TADs and Loops for potential interesting  
+## Identified Compartment, TADs and Loops for potential interesting 
+To download, click the links
 ### HiC-Pro matrices
 #### 20k
 [NT1 matrix](https://www.dropbox.com/scl/fi/6z06c6x0q9qtyo3ucwz7t/NT1_20000_iced.matrix?rlkey=glvkehiwzvoe0v1zgeeek67v0&st=lx90ud4j&dl=0)  
