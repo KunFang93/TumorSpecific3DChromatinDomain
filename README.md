@@ -4,13 +4,13 @@ Codes for 'Hi-C profiling in tissues reveals 3D chromatin-regulated breast tumor
 # Resources
 Patient's Compartment, TADs and Loops (reference genome hg19)
 
-*HiC-Pro 20k Matrices*: resource folder ([**Links in readme**](https://github.com/KunFang93/TumorSpecific3DChromatinDomain/blob/main/resource/readme.md))
+*HiC-Pro 20k Matrices*: resource folder ([**Links in resource Readme**](https://github.com/KunFang93/TumorSpecific3DChromatinDomain/blob/main/resource/readme.md))
   
 *Compartments*: resource folder (pcori.bedGraph)
 
 *TADs*: https://github.com/KunFang93/GISTA/tree/main/data   
 
-*Loops*: resource folder (**Links in readme**)
+*Loops*: resource folder ([**Links in resource Readme**](https://github.com/KunFang93/TumorSpecific3DChromatinDomain/blob/main/resource/readme.md))
 
 # GISTA (Group, Individual-specific TADs Analyzer)
 GISTA has its own github page https://github.com/KunFang93/GISTA
